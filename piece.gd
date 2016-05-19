@@ -30,6 +30,7 @@ func _ready():
 
 func _process(delta):
 	pos = self.get_pos()
+	print(self.get_parent())
 	if global.selected_piece_pos == tilemap.world_to_map(pos):
 		selected = true
 	else:
@@ -40,4 +41,5 @@ func _process(delta):
 		label.set_text(str("selected: ", global.selected_piece_name, " at ", global.selected_piece_pos))
 	else:
 		sprite.set_modulate(Color(1, 1, 1, 1))
+		
 
