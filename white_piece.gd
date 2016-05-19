@@ -3,6 +3,7 @@ extends Area2D
 
 var color = "white"
 var pos
+var selected = false
 
 onready var sprite = get_node("piece")
 onready var tilemap = get_node("../board")
@@ -26,6 +27,12 @@ func _ready():
 func _process(delta):
 	pos = self.get_pos()
 	if global.selected_piece == tilemap.world_to_map(pos):
-		sprite.set_scale(Vector2(1.3, 1.3))
-
+		selected = true
+	else:
+		selected = false
+	
+	if selected:
+		sprite.set_modulate(Color(1.2, 1, 1, 1))
+	else:
+		sprite.set_modulate(Color(1, 1, 1, 1))
 
