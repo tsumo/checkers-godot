@@ -5,6 +5,8 @@ var mouse_pos
 
 onready var tilemap = get_node("board")
 
+var piece = preload("res://piece.scn").instance()
+
 func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
@@ -13,6 +15,7 @@ func _input_event(viewport, event, shape_idx):
 
 func _ready():
 	set_process(true)
+	get_node(".").add_child(piece)
 
 func _process(delta):
 	mouse_pos = get_viewport().get_mouse_pos()

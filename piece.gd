@@ -30,7 +30,6 @@ func _ready():
 
 func _process(delta):
 	pos = self.get_pos()
-	print(self.get_parent())
 	if global.selected_piece_pos == tilemap.world_to_map(pos):
 		selected = true
 	else:
