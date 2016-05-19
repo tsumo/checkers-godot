@@ -4,11 +4,11 @@
 
 extends Area2D
 
-var color = "white"
+var color
 var pos
 var selected = false
 
-onready var sprite = get_node("piece")
+onready var sprite = get_node("sprite")
 onready var tilemap = get_node("../board")
 onready var label = get_node("../text")
 
