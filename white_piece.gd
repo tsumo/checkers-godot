@@ -33,6 +33,7 @@ func _process(delta):
 	
 	if selected:
 		sprite.set_modulate(Color(1.2, 1, 1, 1))
+		label.set_text(str("selected: ", get_name()))
 	else:
 		sprite.set_modulate(Color(1, 1, 1, 1))
 
