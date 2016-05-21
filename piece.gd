@@ -16,6 +16,7 @@ func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
+		self.get_tree().set_input_as_handled()
 		global.selected_piece_pos = tilemap.world_to_map(pos)
 		global.selected_piece_name = self.get_name()
 
