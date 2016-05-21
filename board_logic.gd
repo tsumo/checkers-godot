@@ -1,10 +1,11 @@
 
 extends Node2D
 
-var white_pieces = []
-var black_pieces = []
-
+onready var board_nd = get_node("board")
 onready var label_nd = get_node("label")
+
+var black_piece_txtr = preload("images/black_piece.png")
+var white_piece_txtr = preload("images/white_piece.png")
 
 var piece_scn = preload("res://piece.scn")
 
@@ -25,13 +26,14 @@ func _ready():
 	
 	for i in range(12):
 		var piece = piece_scn.instance()
-		piece.set_pos(Vector2(150,150)+Vector2(randf()*300-3,randf()*300-3))
+		piece.color = "black"
+		var x = [1, 3, 5, 7, 0, 2, 4, 6, 1, 3, 5, 7]
+		var y = i / 4
+		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)) + Vector2(32, 32))
+		var sprite_nd = piece.get_node("sprite")
+		sprite_nd.set_texture(black_piece_txtr)
 		self.add_child(piece)
 
 
 func _process(delta):
 	label_nd.set_text(str("selected: ", global.selected_piece_name, " at ", global.selected_piece_pos))
-
-
-func position_pieces():
-	

@@ -40,7 +40,10 @@ func _process(delta):
 		selected = false
 	
 	if selected:
-		sprite_nd.set_modulate(Color(1.2, 1, 1, 1))
+		if color == "black":
+			sprite_nd.set_modulate(Color(2, 1.6, 1.6, 1))
+		if color == "white":
+			sprite_nd.set_modulate(Color(1.2, 1, 1, 1))
 	else:
 		sprite_nd.set_modulate(Color(1, 1, 1, 1))
 		
