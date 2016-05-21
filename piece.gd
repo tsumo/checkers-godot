@@ -11,6 +11,12 @@ var selected = false
 onready var sprite_nd = get_node("sprite")
 onready var board_nd = get_node("../board")
 
+# Material gets duplicated to allow different shaders on
+# multiple instances of scene
+onready var piece_material = sprite_nd.get_material().duplicate()
+var outline_shader = preload("outline_shader.xml")
+var empty_shader = preload("empty_shader.xml")
+
 
 # Handles click on piece - updates global state
 func _input_event(viewport, event, shape_idx):
@@ -32,6 +38,10 @@ func _mouse_exit():
 
 func _ready():
 	self.set_process(true)
+	
+	# Material to hold shader
+	sprite_nd.set_material(piece_material)
+	sprite_nd.get_material().set_shader(empty_shader)
 
 
 func _process(delta):
@@ -44,10 +54,7 @@ func _process(delta):
 	
 	# Visual selection
 	if selected:
-		if color == "black":
-			sprite_nd.set_modulate(Color(2, 1.6, 1.6, 1))
-		if color == "white":
-			sprite_nd.set_modulate(Color(1.2, 1, 1, 1))
+		piece_material.set_shader(outline_shader)
 	else:
-		sprite_nd.set_modulate(Color(1, 1, 1, 1))
+		piece_material.set_shader(empty_shader)
 		

@@ -10,14 +10,20 @@ var white_piece_txtr = preload("images/white_piece.png")
 var piece_scn = preload("res://piece.scn")
 
 
-# Handles click on empty square
 func _input(event):
+	# Exit by ESC
+	if event.type == InputEvent.KEY \
+	and event.scancode == KEY_ESCAPE:
+		get_tree().quit()
+	
+	# Handles click on empty square
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
-		global.selected_piece_name = "None"
-		global.selected_piece_pos = "None"
-		global.selected_piece_color = "None"
+		if global.selected_piece_name != "None":
+			global.selected_piece_name = "None"
+			global.selected_piece_pos = "None"
+			global.selected_piece_color = "None"
 
 
 func _ready():

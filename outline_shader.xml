@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resource_file type="CanvasItemShader" subresource_count="1" version="2.0" version_name="Godot Engine v2.0.stable.custom_build">
+	<main_resource>
+		<dictionary name="_code" shared="false">
+			<string> "fragment" </string>
+			<string> "uniform float outline_width=2.0;&#000a;uniform color outline_color=vec4(1,0,0,1);&#000a;&#000a;vec4 col = tex(TEXTURE,UV);&#000a;vec2 ps = TEXTURE_PIXEL_SIZE;&#000a;float a;&#000a;float maxa=col.a;&#000a;float mina=col.a;&#000a;a=tex(TEXTURE,UV+vec2(0,-outline_width)*ps).a;&#000a;maxa=max(a,maxa); &#000a;mina=min(a,mina);&#000a;a=tex(TEXTURE,UV+vec2(0,outline_width)*ps).a;&#000a;maxa=max(a,maxa); &#000a;mina=min(a,mina);&#000a;a=tex(TEXTURE,UV+vec2(-outline_width,0)*ps).a;&#000a;maxa=max(a,maxa); &#000a;mina=min(a,mina);&#000a;a=tex(TEXTURE,UV+vec2(outline_width,0)*ps).a;&#000a;maxa=max(a,maxa); &#000a;mina=min(a,mina);&#000a;&#000a;COLOR=mix(col,outline_color,maxa-mina);" </string>
+			<string> "fragment_ofs" </string>
+			<int> 0 </int>
+			<string> "light" </string>
+			<string> "" </string>
+			<string> "light_ofs" </string>
+			<int> 0 </int>
+			<string> "vertex" </string>
+			<string> "" </string>
+			<string> "vertex_ofs" </string>
+			<int> 0 </int>
+		</dictionary>
+
+	</main_resource>
+</resource_file>
