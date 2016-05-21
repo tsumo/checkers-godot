@@ -16,6 +16,7 @@ func _input(event):
 	and event.pressed:
 		global.selected_piece_name = "None"
 		global.selected_piece_pos = "None"
+		global.selected_piece_color = "None"
 
 
 func _ready():
@@ -33,7 +34,19 @@ func _ready():
 		var sprite_nd = piece.get_node("sprite")
 		sprite_nd.set_texture(black_piece_txtr)
 		self.add_child(piece)
+	
+	for i in range(12):
+		var piece = piece_scn.instance()
+		piece.color = "white"
+		var x = [0, 2, 4, 6, 1, 3, 5, 7, 0, 2, 4, 6]
+		var y = (i / 4) + 5
+		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)) + Vector2(32, 32))
+		var sprite_nd = piece.get_node("sprite")
+		sprite_nd.set_texture(white_piece_txtr)
+		self.add_child(piece)
 
 
 func _process(delta):
-	label_nd.set_text(str("selected: ", global.selected_piece_name, " at ", global.selected_piece_pos))
+	label_nd.set_text(str("selected: ", global.selected_piece_name))
+	label_nd.set_text(label_nd.get_text() + str(" at: ", global.selected_piece_pos))
+	label_nd.set_text(label_nd.get_text() + str(" color: ", global.selected_piece_color))
