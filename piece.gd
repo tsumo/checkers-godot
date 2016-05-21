@@ -12,6 +12,7 @@ onready var sprite_nd = get_node("sprite")
 onready var board_nd = get_node("../board")
 
 
+# Handles click on piece - updates global state
 func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
@@ -35,11 +36,13 @@ func _ready():
 
 func _process(delta):
 	pos = self.get_pos()
+	
 	if global.selected_piece_name == self.get_name():
 		selected = true
 	else:
 		selected = false
 	
+	# Visual selection
 	if selected:
 		if color == "black":
 			sprite_nd.set_modulate(Color(2, 1.6, 1.6, 1))

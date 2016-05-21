@@ -10,6 +10,7 @@ var white_piece_txtr = preload("images/white_piece.png")
 var piece_scn = preload("res://piece.scn")
 
 
+# Handles click on empty square
 func _input(event):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
@@ -25,6 +26,7 @@ func _ready():
 	
 	randomize()
 	
+	# Instance and position black pieces
 	for i in range(12):
 		var piece = piece_scn.instance()
 		piece.color = "black"
@@ -35,6 +37,7 @@ func _ready():
 		sprite_nd.set_texture(black_piece_txtr)
 		self.add_child(piece)
 	
+	# # Instance and position white pieces
 	for i in range(12):
 		var piece = piece_scn.instance()
 		piece.color = "white"
