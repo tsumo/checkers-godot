@@ -10,7 +10,6 @@ var selected = false
 
 onready var sprite_nd = get_node("sprite")
 onready var board_nd = get_node("../board")
-onready var label_nd = get_node("../label")
 
 
 func _input_event(viewport, event, shape_idx):
@@ -42,7 +41,6 @@ func _process(delta):
 	
 	if selected:
 		sprite_nd.set_modulate(Color(1.2, 1, 1, 1))
-		label_nd.set_text(str("selected: ", global.selected_piece_name, " at ", global.selected_piece_pos))
 	else:
 		sprite_nd.set_modulate(Color(1, 1, 1, 1))
 		
