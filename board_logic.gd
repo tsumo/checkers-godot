@@ -16,9 +16,9 @@ func _input(event):
 	and event.scancode == KEY_ESCAPE:
 		get_tree().quit()
 	
-	# Handles click on empty square
+	# Right click to deselect
 	if event.type == InputEvent.MOUSE_BUTTON \
-	and event.button_index == BUTTON_LEFT \
+	and event.button_index == BUTTON_RIGHT \
 	and event.pressed:
 		if global.selected_piece_name != "None":
 			global.selected_piece_name = "None"
