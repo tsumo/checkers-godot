@@ -36,7 +36,24 @@ func _input(event):
 				change_current_player()
 			elif is_valid_capture_move(event.pos):
 				move_selected_to(event.pos)
-				remove_piece("aa")
+				#remove right piece
+				if board_nd.world_to_map(event.pos).x > global.selected_piece_pos.x:
+					for piece in get_tree().get_nodes_in_group("pieces_grp"):
+						if global.current_player_color == "b":
+							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, 1):
+								remove_piece(piece.get_name())
+						if global.current_player_color == "w":
+							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, -1):
+								remove_piece(piece.get_name())
+				#remove left piece
+				if board_nd.world_to_map(event.pos).x < global.selected_piece_pos.x:
+					for piece in get_tree().get_nodes_in_group("pieces_grp"):
+						if global.current_player_color == "b":
+							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, 1):
+								remove_piece(piece.get_name())
+						if global.current_player_color == "w":
+							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, -1):
+								remove_piece(piece.get_name())
 				deselect_piece()
 				change_current_player()
 			# Stop event from propagating further
@@ -54,10 +71,7 @@ func _ready():
 
 
 func _process(delta):
-	label_nd.set_text(str("selected: ", global.selected_piece_name))
-	label_nd.set_text(label_nd.get_text() + str("; at: ", global.selected_piece_pos))
-	label_nd.set_text(label_nd.get_text() + str("; color: ", global.selected_piece_color))
-	label_nd.set_text(label_nd.get_text() + str("; player: ", global.current_player_color))
+	pass
 
 
 # Instance and position white pieces
@@ -65,6 +79,8 @@ func init_white():
 	for i in range(12):
 		var piece = piece_scn.instance()
 		piece.color = "w"
+		piece.add_to_group("white_grp")
+		piece.add_to_group("pieces_grp")
 		var x = [0, 2, 4, 6, 1, 3, 5, 7, 0, 2, 4, 6]
 		var y = (i / 4) + 5
 		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)) + Vector2(32, 32))
@@ -79,6 +95,8 @@ func init_black():
 	for i in range(12):
 		var piece = piece_scn.instance()
 		piece.color = "b"
+		piece.add_to_group("black")
+		piece.add_to_group("pieces_grp")
 		var x = [1, 3, 5, 7, 0, 2, 4, 6, 1, 3, 5, 7]
 		var y = i / 4
 		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)) + Vector2(32, 32))
@@ -179,14 +197,20 @@ func is_valid_capture_move(pos):
 
 
 func remove_piece(name):
-	pass
+	var piece = get_node(name)
+	var x = board_nd.world_to_map(piece.get_pos()).x
+	var y = board_nd.world_to_map(piece.get_pos()).y
+	global.state[x][y] = "-"
+	piece.queue_free()
 
 
 func change_current_player():
 	if global.current_player_color == "w":
 		global.current_player_color = "b"
+		label_nd.set_text("Current player: b")
 	else:
 		global.current_player_color = "w"
+		label_nd.set_text("Current player: w")
 
 
 func print_board_state():
