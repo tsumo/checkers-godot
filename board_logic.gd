@@ -166,9 +166,9 @@ func is_valid_capture_move(pos):
 	if global.current_player_color == "b":
 		# Get color of the adjacent pieces
 		# Don't check if piece is on the edge of the board
-		if x_from != 0:
+		if x_from != 0 and y_from != 7:
 			piece_on_the_left = global.state[x_from-1][y_from+1]
-		if x_from != 7:
+		if x_from != 7 and y_from != 7:
 			piece_on_the_right = global.state[x_from+1][y_from+1]
 		# Two squares down
 		if y_to == y_from + 2:
@@ -182,9 +182,9 @@ func is_valid_capture_move(pos):
 			return false
 	else:
 		# Same logic for white pieces
-		if x_from != 0:
+		if x_from != 0  and y_from != 0:
 			piece_on_the_left = global.state[x_from-1][y_from-1]
-		if x_from != 7:
+		if x_from != 7 and y_from != 0:
 			piece_on_the_right = global.state[x_from+1][y_from-1]
 		if y_to == y_from - 2:
 			if (x_to == x_from - 2 and piece_on_the_left == "b") or \
