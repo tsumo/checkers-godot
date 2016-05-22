@@ -29,11 +29,16 @@ func _input(event):
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
 		if global.selected_piece_name != "None" \
-		and is_empty_square(event.pos) \
-		and (is_valid_move(event.pos) or is_valid_capture_move(event.pos)):
-			move_selected_to(event.pos)
-			deselect_piece()
-			change_current_player()
+		and is_empty_square(event.pos):
+			if is_valid_move(event.pos):
+				move_selected_to(event.pos)
+				deselect_piece()
+				change_current_player()
+			elif is_valid_capture_move(event.pos):
+				move_selected_to(event.pos)
+				remove_piece("aa")
+				deselect_piece()
+				change_current_player()
 			# Stop event from propagating further
 			self.get_tree().set_input_as_handled()
 
@@ -138,12 +143,15 @@ func is_valid_capture_move(pos):
 	var y_from = global.selected_piece_pos.y
 	var x_to = board_nd.world_to_map(pos).x
 	var y_to = board_nd.world_to_map(pos).y
-	var piece_on_the_left
-	var piece_on_the_right
+	var piece_on_the_left = "-"
+	var piece_on_the_right = "-"
 	if global.current_player_color == "b":
 		# Get color of the adjacent pieces
-		piece_on_the_left = global.state[x_from-1][y_from+1]
-		piece_on_the_right = global.state[x_from+1][y_from+1]
+		# Don't check if piece is on the edge of the board
+		if x_from != 0:
+			piece_on_the_left = global.state[x_from-1][y_from+1]
+		if x_from != 7:
+			piece_on_the_right = global.state[x_from+1][y_from+1]
 		# Two squares down
 		if y_to == y_from + 2:
 			# Look for another player's piece on diagonal squares
@@ -156,8 +164,10 @@ func is_valid_capture_move(pos):
 			return false
 	else:
 		# Same logic for white pieces
-		piece_on_the_left = global.state[x_from-1][y_from-1]
-		piece_on_the_right = global.state[x_from+1][y_from-1]
+		if x_from != 0:
+			piece_on_the_left = global.state[x_from-1][y_from-1]
+		if x_from != 7:
+			piece_on_the_right = global.state[x_from+1][y_from-1]
 		if y_to == y_from - 2:
 			if (x_to == x_from - 2 and piece_on_the_left == "b") or \
 			(x_to == x_from + 2 and piece_on_the_right == "b"):
@@ -166,6 +176,10 @@ func is_valid_capture_move(pos):
 				return false
 		else:
 			return false
+
+
+func remove_piece(name):
+	pass
 
 
 func change_current_player():
