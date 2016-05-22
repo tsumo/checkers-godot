@@ -24,13 +24,17 @@ func _input(event):
 		if global.selected_piece_name != "None":
 			deselect_piece()
 	
+	# Left click to move selected piece
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
 		if global.selected_piece_name != "None":
-			self.get_tree().set_input_as_handled()
-			get_node(global.selected_piece_name).set_pos(event.pos)
+			print(board_nd.world_to_map(event.pos))
+			#print(board_nd.world_to_map(board_nd.map_to_world(event.pos)))
+			get_node(global.selected_piece_name).set_pos(board_nd.map_to_world(board_nd.world_to_map(event.pos)) + Vector2(32, 32))
 			deselect_piece()
+			# Stop event from propagating further
+			self.get_tree().set_input_as_handled()
 
 
 func _ready():
@@ -51,7 +55,7 @@ func _ready():
 		sprite_nd.set_texture(black_piece_txtr)
 		self.add_child(piece)
 	
-	# # Instance and position white pieces
+	# Instance and position white pieces
 	for i in range(12):
 		var piece = piece_scn.instance()
 		piece.color = "w"
