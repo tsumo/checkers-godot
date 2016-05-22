@@ -28,7 +28,8 @@ func _input(event):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
-		if global.selected_piece_name != "None":
+		if global.selected_piece_name != "None" \
+		and is_empty_square(event.pos):
 			move_selected_to(event.pos)
 			deselect_piece()
 			change_current_player()
@@ -48,8 +49,9 @@ func _ready():
 
 func _process(delta):
 	label_nd.set_text(str("selected: ", global.selected_piece_name))
-	label_nd.set_text(label_nd.get_text() + str(" at: ", global.selected_piece_pos))
-	label_nd.set_text(label_nd.get_text() + str(" color: ", global.selected_piece_color))
+	label_nd.set_text(label_nd.get_text() + str("; at: ", global.selected_piece_pos))
+	label_nd.set_text(label_nd.get_text() + str("; color: ", global.selected_piece_color))
+	label_nd.set_text(label_nd.get_text() + str("; player: ", global.current_player_color))
 
 
 # Instance and position white pieces
@@ -98,6 +100,15 @@ func move_selected_to(pos):
 	var y_to = board_nd.world_to_map(pos).y
 	global.state[x_from][y_from] = "-"
 	global.state[x_to][y_to] = global.selected_piece_color
+
+
+func is_empty_square(pos):
+	var x = board_nd.world_to_map(pos).x
+	var y = board_nd.world_to_map(pos).y
+	if global.state[x][y] == "-":
+		return true
+	else:
+		return false
 
 
 func change_current_player():
