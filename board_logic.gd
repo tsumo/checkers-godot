@@ -31,6 +31,7 @@ func _input(event):
 		if global.selected_piece_name != "None":
 			move_selected_to(event.pos)
 			deselect_piece()
+			change_current_player()
 			# Stop event from propagating further
 			self.get_tree().set_input_as_handled()
 
@@ -99,8 +100,15 @@ func move_selected_to(pos):
 	global.state[x_to][y_to] = global.selected_piece_color
 
 
+func change_current_player():
+	if global.current_player_color == "w":
+		global.current_player_color = "b"
+	else:
+		global.current_player_color = "w"
+
+
 func print_board_state():
-	print("State:")
+	print("Current player: ", global.current_player_color)
 	for i in range(8):
 		var state_line = ""
 		for j in range(8):
