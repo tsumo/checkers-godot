@@ -30,7 +30,7 @@ func _input(event):
 	and event.pressed:
 		if global.selected_piece_name != "None" \
 		and is_empty_square(event.pos) \
-		and is_valid_move(event.pos):
+		and (is_valid_move(event.pos) or is_valid_capture_move(event.pos)):
 			move_selected_to(event.pos)
 			deselect_piece()
 			change_current_player()
@@ -129,6 +129,41 @@ func is_valid_move(pos):
 		if y_to == y_from - 1 and \
 		(x_to == x_from - 1 or x_to == x_from + 1):
 			return true
+		else:
+			return false
+
+
+func is_valid_capture_move(pos):
+	var x_from = global.selected_piece_pos.x
+	var y_from = global.selected_piece_pos.y
+	var x_to = board_nd.world_to_map(pos).x
+	var y_to = board_nd.world_to_map(pos).y
+	var piece_on_the_left
+	var piece_on_the_right
+	if global.current_player_color == "b":
+		# Get color of the adjacent pieces
+		piece_on_the_left = global.state[x_from-1][y_from+1]
+		piece_on_the_right = global.state[x_from+1][y_from+1]
+		# Two squares down
+		if y_to == y_from + 2:
+			# Look for another player's piece on diagonal squares
+			if (x_to == x_from - 2 and piece_on_the_left == "w") or \
+			(x_to == x_from + 2 and piece_on_the_right == "w"):
+				return true
+			else:
+				return false
+		else:
+			return false
+	else:
+		# Same logic for white pieces
+		piece_on_the_left = global.state[x_from-1][y_from-1]
+		piece_on_the_right = global.state[x_from+1][y_from-1]
+		if y_to == y_from - 2:
+			if (x_to == x_from - 2 and piece_on_the_left == "b") or \
+			(x_to == x_from + 2 and piece_on_the_right == "b"):
+				return true
+			else:
+				return false
 		else:
 			return false
 
