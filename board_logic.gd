@@ -29,7 +29,8 @@ func _input(event):
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
 		if global.selected_piece_name != "None" \
-		and is_empty_square(event.pos):
+		and is_empty_square(event.pos) \
+		and is_valid_move(event.pos):
 			move_selected_to(event.pos)
 			deselect_piece()
 			change_current_player()
@@ -109,6 +110,27 @@ func is_empty_square(pos):
 		return true
 	else:
 		return false
+
+
+func is_valid_move(pos):
+	var x_from = global.selected_piece_pos.x
+	var y_from = global.selected_piece_pos.y
+	var x_to = board_nd.world_to_map(pos).x
+	var y_to = board_nd.world_to_map(pos).y
+	if global.current_player_color == "b":
+		# Allow diagonal moves down only
+		if y_to == y_from + 1 and \
+		(x_to == x_from - 1 or x_to == x_from + 1):
+			return true
+		else:
+			return false
+	else:
+		# Same for white pieces, only diagonal moves up
+		if y_to == y_from - 1 and \
+		(x_to == x_from - 1 or x_to == x_from + 1):
+			return true
+		else:
+			return false
 
 
 func change_current_player():
