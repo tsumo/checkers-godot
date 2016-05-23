@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resource_file type="PackedScene" subresource_count="4" version="2.0" version_name="Godot Engine v2.0.stable.custom_build">
+	<ext_resource path="res://board_logic.gd" type="Script" index="0"></ext_resource>
+	<ext_resource path="res://tileset.res" type="TileSet" index="1"></ext_resource>
+	<resource type="RectangleShape2D" path="local://1">
+		<real name="custom_solver_bias"> 0 </real>
+		<vector2 name="extents"> 256, 256 </vector2>
+
+	</resource>
+	<main_resource>
+		<dictionary name="_bundled" shared="false">
+			<string> "conn_count" </string>
+			<int> 0 </int>
+			<string> "conns" </string>
+			<int_array  len="0"> 				 </int_array>
+			<string> "editable_instances" </string>
+			<array  len="0" shared="false">
+			</array>
+			<string> "names" </string>
+			<string_array  len="42">
+				<string> "root" </string>
+				<string> "script/script" </string>
+				<string> "__meta__" </string>
+				<string> "Node2D" </string>
+				<string> "board" </string>
+				<string> "mode" </string>
+				<string> "tile_set" </string>
+				<string> "cell/size" </string>
+				<string> "cell/quadrant_size" </string>
+				<string> "cell/custom_transform" </string>
+				<string> "cell/half_offset" </string>
+				<string> "cell/tile_origin" </string>
+				<string> "cell/y_sort" </string>
+				<string> "collision/use_kinematic" </string>
+				<string> "collision/friction" </string>
+				<string> "collision/bounce" </string>
+				<string> "collision/layers" </string>
+				<string> "collision/mask" </string>
+				<string> "occluder/light_mask" </string>
+				<string> "tile_data" </string>
+				<string> "TileMap" </string>
+				<string> "label" </string>
+				<string> "anchor/right" </string>
+				<string> "anchor/bottom" </string>
+				<string> "margin/left" </string>
+				<string> "margin/top" </string>
+				<string> "margin/right" </string>
+				<string> "margin/bottom" </string>
+				<string> "focus/ignore_mouse" </string>
+				<string> "focus/stop_mouse" </string>
+				<string> "size_flags/horizontal" </string>
+				<string> "text" </string>
+				<string> "percent_visible" </string>
+				<string> "lines_skipped" </string>
+				<string> "max_lines_visible" </string>
+				<string> "Label" </string>
+				<string> "CollisionShape2D" </string>
+				<string> "visibility/visible" </string>
+				<string> "transform/pos" </string>
+				<string> "shape" </string>
+				<string> "trigger" </string>
+				<string> "_update_shape_index" </string>
+			</string_array>
+			<string> "node_count" </string>
+			<int> 4 </int>
+			<string> "node_paths" </string>
+			<array  len="0" shared="false">
+			</array>
+			<string> "nodes" </string>
+			<int_array  len="104"> 				-1, -1, 3, 0, -1, 2, 1, 0, 2, 1, 0, 0, 0, 20, 4, -1, 16, 5, 2, 6, 3, 7, 4, 8, 5, 9, 6, 10, 7, 11, 2, 12, 8, 13, 8, 14, 9, 15, 10, 16, 11, 17, 11, 18, 11, 19, 12, 2, 13, 0, 0, 0, 35, 21, -1, 14, 22, 11, 23, 11, 24, 14, 25, 15, 26, 16, 27, 17, 28, 18, 29, 18, 30, 7, 31, 19, 32, 9, 33, 2, 34, 20, 2, 21, 0, 0, 0, 36, 36, -1, 6, 37, 8, 38, 22, 39, 23, 40, 8, 41, 20, 2, 24, 0 </int_array>
+			<string> "variants" </string>
+			<array  len="25" shared="false">
+				<resource  external="0">  </resource>
+				<dictionary  shared="false">
+					<string> "_edit_lock_" </string>
+					<bool> True </bool>
+				</dictionary>
+				<int> 0 </int>
+				<resource  external="1">  </resource>
+				<vector2> 64, 64 </vector2>
+				<int> 16 </int>
+				<matrix32> 1, 0, 0, 1, 0, 0 </matrix32>
+				<int> 2 </int>
+				<bool> False </bool>
+				<real> 1 </real>
+				<real> 0 </real>
+				<int> 1 </int>
+				<int_array  len="128"> 					0, 0, 1, 1, 2, 0, 3, 1, 4, 0, 5, 1, 6, 0, 7, 1, 65536, 1, 65537, 0, 65538, 1, 65539, 0, 65540, 1, 65541, 0, 65542, 1, 65543, 0, 131072, 0, 131073, 1, 131074, 0, 131075, 1, 131076, 0, 131077, 1, 131078, 0, 131079, 1, 196608, 1, 196609, 0, 196610, 1, 196611, 0, 196612, 1, 196613, 0, 196614, 1, 196615, 0, 262144, 0, 262145, 1, 262146, 0, 262147, 1, 262148, 0, 262149, 1, 262150, 0, 262151, 1, 327680, 1, 327681, 0, 327682, 1, 327683, 0, 327684, 1, 327685, 0, 327686, 1, 327687, 0, 393216, 0, 393217, 1, 393218, 0, 393219, 1, 393220, 0, 393221, 1, 393222, 0, 393223, 1, 458752, 1, 458753, 0, 458754, 1, 458755, 0, 458756, 1, 458757, 0, 458758, 1, 458759, 0 </int_array>
+				<dictionary  shared="false">
+					<string> "_edit_lock_" </string>
+					<bool> True </bool>
+				</dictionary>
+				<real> 39 </real>
+				<real> 520 </real>
+				<real> -40 </real>
+				<real> -469 </real>
+				<bool> True </bool>
+				<string> "label" </string>
+				<int> -1 </int>
+				<dictionary  shared="false">
+					<string> "_edit_lock_" </string>
+					<bool> True </bool>
+				</dictionary>
+				<vector2> 256, 256 </vector2>
+				<resource  resource_type="Shape2D" path="local://1">  </resource>
+				<dictionary  shared="false">
+					<string> "_edit_lock_" </string>
+					<bool> True </bool>
+				</dictionary>
+			</array>
+			<string> "version" </string>
+			<int> 2 </int>
+		</dictionary>
+
+	</main_resource>
+</resource_file>

@@ -7,7 +7,7 @@ onready var label_nd = get_node("label")
 var black_piece_txtr = preload("images/black_piece.png")
 var white_piece_txtr = preload("images/white_piece.png")
 
-var piece_scn = preload("res://piece.scn")
+var piece_scn = preload("res://piece.xml")
 
 
 func _input(event):

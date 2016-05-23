@@ -30,11 +30,13 @@ func _input_event(viewport, event, shape_idx):
 
 
 func _mouse_enter():
-	sprite_nd.set_scale(Vector2(1.1, 1.1))
+	if global.current_player_color == color:
+		sprite_nd.set_scale(Vector2(1.1, 1.1))
 
 
 func _mouse_exit():
-	sprite_nd.set_scale(Vector2(1, 1))
+	if global.current_player_color == color:
+		sprite_nd.set_scale(Vector2(1, 1))
 
 
 func _ready():
