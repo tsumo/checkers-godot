@@ -36,24 +36,10 @@ func _input(event):
 				change_current_player()
 			elif is_valid_capture_move(event.pos):
 				move_selected_to(event.pos)
-				#remove right piece
 				if board_nd.world_to_map(event.pos).x > global.selected_piece_pos.x:
-					for piece in get_tree().get_nodes_in_group("pieces_grp"):
-						if global.current_player_color == "b":
-							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, 1):
-								remove_piece(piece.get_name())
-						if global.current_player_color == "w":
-							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, -1):
-								remove_piece(piece.get_name())
-				#remove left piece
+					capture_right()
 				if board_nd.world_to_map(event.pos).x < global.selected_piece_pos.x:
-					for piece in get_tree().get_nodes_in_group("pieces_grp"):
-						if global.current_player_color == "b":
-							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, 1):
-								remove_piece(piece.get_name())
-						if global.current_player_color == "w":
-							if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, -1):
-								remove_piece(piece.get_name())
+					capture_left()
 				deselect_piece()
 				change_current_player()
 			# Stop event from propagating further
@@ -194,6 +180,26 @@ func is_valid_capture_move(pos):
 				return false
 		else:
 			return false
+
+
+func capture_left():
+	for piece in get_tree().get_nodes_in_group("pieces_grp"):
+		if global.current_player_color == "b":
+			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, 1):
+				remove_piece(piece.get_name())
+		if global.current_player_color == "w":
+			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, -1):
+				remove_piece(piece.get_name())
+
+
+func capture_right():
+	for piece in get_tree().get_nodes_in_group("pieces_grp"):
+		if global.current_player_color == "b":
+			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, 1):
+				remove_piece(piece.get_name())
+		if global.current_player_color == "w":
+			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, -1):
+				remove_piece(piece.get_name())
 
 
 func remove_piece(name):

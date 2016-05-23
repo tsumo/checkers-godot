@@ -7,6 +7,7 @@ extends Area2D
 var color
 var pos
 var selected = false
+var crowned = false
 
 onready var sprite_nd = get_node("sprite")
 onready var board_nd = get_node("../board")
