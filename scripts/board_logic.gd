@@ -8,6 +8,7 @@ var black_piece_txtr = preload("res://images/black_piece.png")
 var white_piece_txtr = preload("res://images/white_piece.png")
 
 var piece_scn = preload("res://scenes/piece.xml")
+var highlight_scn = preload("res://scenes/highlight.xml")
 
 
 func _input(event):
