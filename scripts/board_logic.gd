@@ -33,6 +33,7 @@ func _input(event):
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
 		if global.selected_piece_name != "None" \
+		and is_on_board(event.pos) \
 		and is_empty_square(event.pos):
 			if is_valid_move(event.pos):
 				move_selected_to(event.pos)
@@ -120,6 +121,15 @@ func is_empty_square(pos):
 	var x = board_nd.world_to_map(pos).x
 	var y = board_nd.world_to_map(pos).y
 	if global.state[x][y] == "-":
+		return true
+	else:
+		return false
+
+
+func is_on_board(pos):
+	var x = board_nd.world_to_map(pos).x
+	var y = board_nd.world_to_map(pos).y
+	if (x >= 0 and x <= 7) and (y >= 0 and y <= 7):
 		return true
 	else:
 		return false
