@@ -15,8 +15,8 @@ onready var board_nd = get_node("../board")
 # Material gets duplicated to allow different shaders on
 # multiple instances of scene
 onready var piece_material = sprite_nd.get_material().duplicate()
-var outline_shader = preload("outline_shader.xml")
-var empty_shader = preload("empty_shader.xml")
+var outline_shader = preload("res://res/outline_shader.xml")
+var empty_shader = preload("res://res/empty_shader.xml")
 
 
 # Handles click on piece - updates global state

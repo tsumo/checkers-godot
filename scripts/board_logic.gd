@@ -4,10 +4,10 @@ extends Node2D
 onready var board_nd = get_node("board")
 onready var label_nd = get_node("label")
 
-var black_piece_txtr = preload("images/black_piece.png")
-var white_piece_txtr = preload("images/white_piece.png")
+var black_piece_txtr = preload("res://images/black_piece.png")
+var white_piece_txtr = preload("res://images/white_piece.png")
 
-var piece_scn = preload("res://piece.xml")
+var piece_scn = preload("res://scenes/piece.xml")
 
 
 func _input(event):
@@ -16,11 +16,14 @@ func _input(event):
 	and event.scancode == KEY_ESCAPE:
 		get_tree().quit()
 	
+	if event.type == InputEvent.MOUSE_BUTTON \
+	and event.button_index == BUTTON_WHEEL_DOWN:
+		print_board_state()
+	
 	# Right click to deselect
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_RIGHT \
 	and event.pressed:
-		print_board_state()
 		if global.selected_piece_name != "None":
 			deselect_piece()
 	
