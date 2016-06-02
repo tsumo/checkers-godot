@@ -41,10 +41,7 @@ func _input(event):
 				change_current_player()
 			elif is_valid_capture_move(event.pos):
 				move_selected_to(event.pos)
-				if board_nd.world_to_map(event.pos).x > global.selected_piece_pos.x:
-					capture_right()
-				if board_nd.world_to_map(event.pos).x < global.selected_piece_pos.x:
-					capture_left()
+				capture_from_current_to(event.pos)
 				deselect_piece()
 				change_current_player()
 			# Stop event from propagating further
@@ -70,7 +67,7 @@ func init_white():
 	for i in range(12):
 		var piece = piece_scn.instance()
 		piece.color = "w"
-		piece.add_to_group("white_grp")
+		piece.add_to_group("w")
 		piece.add_to_group("pieces_grp")
 		var x = [0, 2, 4, 6, 1, 3, 5, 7, 0, 2, 4, 6]
 		var y = (i / 4) + 5
@@ -86,7 +83,7 @@ func init_black():
 	for i in range(12):
 		var piece = piece_scn.instance()
 		piece.color = "b"
-		piece.add_to_group("black")
+		piece.add_to_group("b")
 		piece.add_to_group("pieces_grp")
 		var x = [1, 3, 5, 7, 0, 2, 4, 6, 1, 3, 5, 7]
 		var y = i / 4
@@ -196,23 +193,33 @@ func is_valid_capture_move(pos):
 			return false
 
 
-func capture_left():
-	for piece in get_tree().get_nodes_in_group("pieces_grp"):
-		if global.current_player_color == "b":
-			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, 1):
-				remove_piece(piece.get_name())
-		if global.current_player_color == "w":
-			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(-1, -1):
-				remove_piece(piece.get_name())
+# TO DO
+func has_moves(piece_pos):
+	var x = board_nd.world_to_map(piece_pos).x
+	var y = board_nd.world_to_map(piece_pos).y
 
 
-func capture_right():
-	for piece in get_tree().get_nodes_in_group("pieces_grp"):
-		if global.current_player_color == "b":
-			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, 1):
-				remove_piece(piece.get_name())
-		if global.current_player_color == "w":
-			if board_nd.world_to_map(piece.get_pos()) == global.selected_piece_pos + Vector2(1, -1):
+func capture_from_current_to(pos):
+	var x_from = global.selected_piece_pos.x
+	var y_from = global.selected_piece_pos.y
+	var x_to = board_nd.world_to_map(pos).x
+	var y_to = board_nd.world_to_map(pos).y
+	var x = x_from
+	var y = y_from
+	# Go through all squares in between current pos
+	# and destination pos
+	while(x != x_to):
+		if x < x_to:
+			x += 1
+		else:
+			x -= 1
+		if y < y_to:
+			y += 1
+		else:
+			y -= 1
+		# Go through all opposite color pieces
+		for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
+			if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
 				remove_piece(piece.get_name())
 
 
@@ -224,13 +231,16 @@ func remove_piece(name):
 	piece.queue_free()
 
 
-func change_current_player():
-	if global.current_player_color == "w":
-		global.current_player_color = "b"
-		label_nd.set_text("Current player: b")
+func inv_color(color):
+	if color == "b":
+		return "w"
 	else:
-		global.current_player_color = "w"
-		label_nd.set_text("Current player: w")
+		return "b"
+
+
+func change_current_player():
+	global.current_player_color = inv_color(global.current_player_color)
+	label_nd.set_text("Current player: " + global.current_player_color)
 
 
 func print_board_state():
