@@ -71,7 +71,7 @@ func init_white():
 		piece.add_to_group("pieces_grp")
 		var x = [0, 2, 4, 6, 1, 3, 5, 7, 0, 2, 4, 6]
 		var y = (i / 4) + 5
-		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)) + Vector2(32, 32))
+		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)))
 		global.state[x[i]][y] = "w"
 		var sprite_nd = piece.get_node("sprite")
 		sprite_nd.set_texture(white_piece_txtr)
@@ -87,7 +87,7 @@ func init_black():
 		piece.add_to_group("pieces_grp")
 		var x = [1, 3, 5, 7, 0, 2, 4, 6, 1, 3, 5, 7]
 		var y = i / 4
-		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)) + Vector2(32, 32))
+		piece.set_pos(board_nd.map_to_world(Vector2(x[i], y)))
 		global.state[x[i]][y] = "b"
 		var sprite_nd = piece.get_node("sprite")
 		sprite_nd.set_texture(black_piece_txtr)
@@ -103,8 +103,7 @@ func deselect_piece():
 func move_selected_to(pos):
 	# Transform global click pos to board coordinates and back
 	# to move piece exactly to the clicked square.
-	# Add offset to position it in center of the square
-	get_node(global.selected_piece_name).set_pos(board_nd.map_to_world(board_nd.world_to_map(pos)) + Vector2(32, 32))
+	get_node(global.selected_piece_name).set_pos(board_nd.map_to_world(board_nd.world_to_map(pos)))
 	# Update global state
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
@@ -136,6 +135,7 @@ func is_on_board(pos):
 func has_moves(piece_pos):
 	var x = board_nd.world_to_map(piece_pos).x
 	var y = board_nd.world_to_map(piece_pos).y
+	
 
 
 func is_valid_move(pos):
