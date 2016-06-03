@@ -132,6 +132,12 @@ func is_on_board(pos):
 		return false
 
 
+# TO DO
+func has_moves(piece_pos):
+	var x = board_nd.world_to_map(piece_pos).x
+	var y = board_nd.world_to_map(piece_pos).y
+
+
 func is_valid_move(pos):
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
@@ -158,45 +164,25 @@ func is_valid_capture_move(pos):
 	var y_from = global.selected_piece_pos.y
 	var x_to = board_nd.world_to_map(pos).x
 	var y_to = board_nd.world_to_map(pos).y
-	var piece_on_the_left = "-"
-	var piece_on_the_right = "-"
-	if global.current_player_color == "b":
-		# Get color of the adjacent pieces
-		# Don't check if piece is on the edge of the board
-		if x_from != 0 and y_from != 7:
-			piece_on_the_left = global.state[x_from-1][y_from+1]
-		if x_from != 7 and y_from != 7:
-			piece_on_the_right = global.state[x_from+1][y_from+1]
-		# Two squares down
-		if y_to == y_from + 2:
-			# Look for another player's piece on diagonal squares
-			if (x_to == x_from - 2 and piece_on_the_left == "w") or \
-			(x_to == x_from + 2 and piece_on_the_right == "w"):
-				return true
+	var x = x_from
+	var y = y_from
+	if abs(x_from - x_to) == 2 and abs(y_from - y_to) == 2:
+		# Go through all squares in between current pos
+		# and destination pos
+		while(x != x_to):
+			if x < x_to:
+				x += 1
 			else:
-				return false
-		else:
-			return false
-	else:
-		# Same logic for white pieces
-		if x_from != 0  and y_from != 0:
-			piece_on_the_left = global.state[x_from-1][y_from-1]
-		if x_from != 7 and y_from != 0:
-			piece_on_the_right = global.state[x_from+1][y_from-1]
-		if y_to == y_from - 2:
-			if (x_to == x_from - 2 and piece_on_the_left == "b") or \
-			(x_to == x_from + 2 and piece_on_the_right == "b"):
-				return true
+				x -= 1
+			if y < y_to:
+				y += 1
 			else:
-				return false
-		else:
-			return false
-
-
-# TO DO
-func has_moves(piece_pos):
-	var x = board_nd.world_to_map(piece_pos).x
-	var y = board_nd.world_to_map(piece_pos).y
+				y -= 1
+			# Go through all opposite color pieces
+			for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
+				if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
+					return true
+	return false
 
 
 func capture_from_current_to(pos):
