@@ -37,13 +37,14 @@ func _input(event):
 		and is_empty_square(event.pos):
 			if is_valid_move(event.pos):
 				move_selected_to(event.pos)
-				deselect_piece()
 				change_current_player()
+				deselect_piece()
 			elif is_valid_capture_move(event.pos):
 				move_selected_to(event.pos)
 				capture_from_current_to(event.pos)
+				if not has_capture_moves(event.pos):
+					change_current_player()
 				deselect_piece()
-				change_current_player()
 			# Stop event from propagating further
 			self.get_tree().set_input_as_handled()
 
@@ -131,10 +132,24 @@ func is_on_board(pos):
 		return false
 
 
-# TO DO
-func has_moves(piece_pos):
-	var x = board_nd.world_to_map(piece_pos).x
-	var y = board_nd.world_to_map(piece_pos).y
+func has_capture_moves(pos):
+	var x = board_nd.world_to_map(pos).x
+	var y = board_nd.world_to_map(pos).y
+	var diag = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+	var empty_square
+	# Check every diagonal direction
+	for dir in diag:
+		# Check for enemy piece nearby
+		for enemy_piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
+			if board_nd.world_to_map(enemy_piece.pos) == Vector2(x + dir[0], y + dir[1]):
+				# Check for empty space behind enemy piece
+				empty_square = true
+				for piece in get_tree().get_nodes_in_group("pieces_grp"):
+					if piece.pos == Vector2(x + dir[0] * 2, y + dir[1] * 2):
+						empty_square = false
+				if empty_square:
+					return true
+	return false
 
 
 func is_valid_move(pos):
