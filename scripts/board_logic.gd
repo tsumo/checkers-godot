@@ -17,6 +17,7 @@ func _input(event):
 	and event.scancode == KEY_ESCAPE:
 		get_tree().quit()
 	
+	# Wheel down to print game status
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_WHEEL_DOWN:
 		print_board_state()
@@ -32,18 +33,21 @@ func _input(event):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
+		
+		var pos = board_nd.world_to_map(event.pos)
+		
 		if global.selected_piece_name != "None" \
-		and is_on_board(event.pos) \
-		and is_empty_square(event.pos):
-			if is_valid_move(event.pos):
-				move_selected_to(event.pos)
+		and is_on_board(pos) \
+		and is_empty_square(pos):
+			if is_valid_move(pos):
+				move_selected_to(pos)
 				change_current_player()
 				deselect_piece()
-			elif is_valid_capture_move(event.pos):
-				move_selected_to(event.pos)
-				capture_from_current_to(event.pos)
-				if has_capture_moves(event.pos):
-					global.selected_piece_pos = board_nd.world_to_map(event.pos)
+			elif is_valid_capture_move(pos):
+				move_selected_to(pos)
+				capture_from_current_to(pos)
+				if has_capture_moves(pos):
+					global.selected_piece_pos = pos
 					global.selection_blocked = true
 				else:
 					change_current_player()
@@ -111,21 +115,20 @@ func deselect_piece():
 
 
 func move_selected_to(pos):
-	# Transform global click pos to board coordinates and back
-	# to move piece exactly to the clicked square.
-	get_node(global.selected_piece_name).set_pos(board_nd.map_to_world(board_nd.world_to_map(pos)))
+	var new_pos = board_nd.map_to_world(pos)
+	get_node(global.selected_piece_name).set_pos(new_pos)
 	# Update global state
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
-	var x_to = board_nd.world_to_map(pos).x
-	var y_to = board_nd.world_to_map(pos).y
+	var x_to = pos.x
+	var y_to = pos.y
 	global.state[x_from][y_from] = "-"
 	global.state[x_to][y_to] = global.selected_piece_color
 
 
 func is_empty_square(pos):
-	var x = board_nd.world_to_map(pos).x
-	var y = board_nd.world_to_map(pos).y
+	var x = pos.x
+	var y = pos.y
 	if global.state[x][y] == "-":
 		return true
 	else:
@@ -133,8 +136,8 @@ func is_empty_square(pos):
 
 
 func is_on_board(pos):
-	var x = board_nd.world_to_map(pos).x
-	var y = board_nd.world_to_map(pos).y
+	var x = pos.x
+	var y = pos.y
 	if (x >= 0 and x <= 7) and (y >= 0 and y <= 7):
 		return true
 	else:
@@ -142,8 +145,8 @@ func is_on_board(pos):
 
 
 func has_capture_moves(pos):
-	var x = board_nd.world_to_map(pos).x
-	var y = board_nd.world_to_map(pos).y
+	var x = pos.x
+	var y = pos.y
 	var diag = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
 	var empty_square
 	# Check every diagonal direction
@@ -164,8 +167,8 @@ func has_capture_moves(pos):
 func is_valid_move(pos):
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
-	var x_to = board_nd.world_to_map(pos).x
-	var y_to = board_nd.world_to_map(pos).y
+	var x_to = pos.x
+	var y_to = pos.y
 	# Normal moves allowed only for non-blocked pieces
 	if global.selection_blocked == false:
 		if global.current_player_color == "b":
@@ -189,8 +192,8 @@ func is_valid_move(pos):
 func is_valid_capture_move(pos):
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
-	var x_to = board_nd.world_to_map(pos).x
-	var y_to = board_nd.world_to_map(pos).y
+	var x_to = pos.x
+	var y_to = pos.y
 	var x = x_from
 	var y = y_from
 	if abs(x_from - x_to) == 2 and abs(y_from - y_to) == 2:
@@ -215,8 +218,8 @@ func is_valid_capture_move(pos):
 func capture_from_current_to(pos):
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
-	var x_to = board_nd.world_to_map(pos).x
-	var y_to = board_nd.world_to_map(pos).y
+	var x_to = pos.x
+	var y_to = pos.y
 	var x = x_from
 	var y = y_from
 	# Go through all squares in between current pos
@@ -234,6 +237,7 @@ func capture_from_current_to(pos):
 		for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
 			if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
 				remove_piece(piece.get_name())
+	global.selected_piece_pos = Vector2(x_to, y_to)
 
 
 func remove_piece(name):
