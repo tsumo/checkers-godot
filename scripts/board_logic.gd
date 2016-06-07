@@ -42,18 +42,21 @@ func _input(event):
 			elif is_valid_capture_move(event.pos):
 				move_selected_to(event.pos)
 				capture_from_current_to(event.pos)
-				if not has_capture_moves(event.pos):
+				if has_capture_moves(event.pos):
+					global.selected_piece_pos = board_nd.world_to_map(event.pos)
+					global.selection_blocked = true
+				else:
 					change_current_player()
-				deselect_piece()
+					deselect_piece()
 			# Stop event from propagating further
 			self.get_tree().set_input_as_handled()
 
 
 func _ready():
+	randomize()
+	
 	set_process(true)
 	set_process_input(true)
-	
-	randomize()
 	
 	init_black()
 	init_white()
@@ -97,8 +100,9 @@ func init_black():
 
 func deselect_piece():
 	global.selected_piece_name = "None"
-	global.selected_piece_pos = "None"
+	global.selected_piece_pos = Vector2(-1, -1)
 	global.selected_piece_color = "None"
+	global.selection_blocked = false
 
 
 func move_selected_to(pos):
@@ -157,20 +161,24 @@ func is_valid_move(pos):
 	var y_from = global.selected_piece_pos.y
 	var x_to = board_nd.world_to_map(pos).x
 	var y_to = board_nd.world_to_map(pos).y
-	if global.current_player_color == "b":
-		# Allow diagonal moves down only
-		if y_to == y_from + 1 and \
-		(x_to == x_from - 1 or x_to == x_from + 1):
-			return true
+	# Normal moves allowed only for non-blocked pieces
+	if global.selection_blocked == false:
+		if global.current_player_color == "b":
+			# Allow diagonal moves down only
+			if y_to == y_from + 1 and \
+			(x_to == x_from - 1 or x_to == x_from + 1):
+				return true
+			else:
+				return false
 		else:
-			return false
+			# Same for white pieces, only diagonal moves up
+			if y_to == y_from - 1 and \
+			(x_to == x_from - 1 or x_to == x_from + 1):
+				return true
+			else:
+				return false
 	else:
-		# Same for white pieces, only diagonal moves up
-		if y_to == y_from - 1 and \
-		(x_to == x_from - 1 or x_to == x_from + 1):
-			return true
-		else:
-			return false
+		return false
 
 
 func is_valid_capture_move(pos):
@@ -244,9 +252,16 @@ func change_current_player():
 
 
 func print_board_state():
+	print("---STATUS---")
 	print("Current player: ", global.current_player_color)
+	print("Selected pos: ", global.selected_piece_pos)
+	print("Selected name: ", global.selected_piece_name)
+	print("Selection blocked: ", global.selection_blocked)
 	for i in range(8):
 		var state_line = ""
 		for j in range(8):
-			state_line += global.state[j][i] + " "
+			if j == global.selected_piece_pos.x and i == global.selected_piece_pos.y:
+				state_line += global.state[j][i].to_upper() + "\t"
+			else:
+				state_line += global.state[j][i] + "\t"
 		print(state_line)

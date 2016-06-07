@@ -5,10 +5,13 @@
 extends Node
 
 var selected_piece_name = "None"
-var selected_piece_pos = "None"
+var selected_piece_pos = Vector2(-1, -1)
 var selected_piece_color = "None"
 
 var current_player_color = "w"
+
+# For multikill moves
+var selection_blocked = false
 
 # Stores positions of pieces
 var state = []

@@ -24,7 +24,8 @@ func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
-		if global.current_player_color == color:
+		if global.current_player_color == color \
+		and global.selection_blocked == false:
 			global.selected_piece_name = self.get_name()
 			global.selected_piece_pos = board_nd.world_to_map(pos)
 			global.selected_piece_color = color
