@@ -4,10 +4,6 @@
 
 extends Node
 
-#var screen_size = OS.get_screen_size(screen=0)
-#var window_size = OS.get_window_size()
-#OS.set_window_position(screen_size*0.5 - window_size*0.5)
-
 var selected_piece_name = "None"
 var selected_piece_pos = Vector2(-1, -1)
 var selected_piece_color = "None"
