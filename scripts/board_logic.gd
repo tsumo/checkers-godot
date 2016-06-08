@@ -132,8 +132,7 @@ func move_selected_to(pos):
 	# Crowning
 	if global.selected_piece_color == "w" and y_to == 0 or \
 	global.selected_piece_color == "b" and y_to == 7:
-		piece.get_node("crown").show()
-		piece.crowned = true
+		crown(piece)
 
 
 func is_empty_square(pos):
@@ -246,6 +245,11 @@ func capture_from_current_to(pos):
 		for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
 			if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
 				remove_piece(piece.get_name())
+
+
+func crown(piece):
+	piece.get_node("crown").show()
+	piece.crowned = true
 
 
 func remove_piece(name):
