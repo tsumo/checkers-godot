@@ -216,10 +216,12 @@ func is_valid_capture_move(pos):
 				y += 1
 			else:
 				y -= 1
-			# Go through all opposite color pieces
-			for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
-				if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
-					return true
+			# Check for enemy piece
+			if global.state[x][y] == inv_color(global.current_player_color):
+				return true
+#			for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
+#				if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
+#					return true
 	return false
 
 
