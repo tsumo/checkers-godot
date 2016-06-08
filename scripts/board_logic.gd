@@ -26,7 +26,8 @@ func _input(event):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_RIGHT \
 	and event.pressed:
-		if global.selected_piece_name != "None":
+		if global.selected_piece_name != "None" and \
+		global.selection_blocked == false:
 			deselect_piece()
 	
 	# Left click to move selected piece
@@ -44,11 +45,10 @@ func _input(event):
 				change_current_player()
 				deselect_piece()
 			elif is_valid_capture_move(pos):
-				move_selected_to(pos)
 				capture_from_current_to(pos)
+				move_selected_to(pos)
 				if has_capture_moves(pos):
-					global.selected_piece_pos = pos
-					global.selection_blocked = true
+					block_selection()
 				else:
 					change_current_player()
 					deselect_piece()
@@ -114,6 +114,10 @@ func deselect_piece():
 	global.selection_blocked = false
 
 
+func block_selection():
+	global.selection_blocked = true
+
+
 func move_selected_to(pos):
 	var new_pos = board_nd.map_to_world(pos)
 	get_node(global.selected_piece_name).set_pos(new_pos)
@@ -124,6 +128,7 @@ func move_selected_to(pos):
 	var y_to = pos.y
 	global.state[x_from][y_from] = "-"
 	global.state[x_to][y_to] = global.selected_piece_color
+	global.selected_piece_pos = Vector2(x_to, y_to)
 
 
 func is_empty_square(pos):
@@ -145,22 +150,25 @@ func is_on_board(pos):
 
 
 func has_capture_moves(pos):
+	print("Checking for moves at ", pos)
 	var x = pos.x
 	var y = pos.y
 	var diag = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
-	var empty_square
 	# Check every diagonal direction
 	for dir in diag:
+		print("  Checking dir ", dir)
 		# Check for enemy piece nearby
-		for enemy_piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
-			if board_nd.world_to_map(enemy_piece.pos) == Vector2(x + dir[0], y + dir[1]):
-				# Check for empty space behind enemy piece
-				empty_square = true
-				for piece in get_tree().get_nodes_in_group("pieces_grp"):
-					if piece.pos == Vector2(x + dir[0] * 2, y + dir[1] * 2):
-						empty_square = false
-				if empty_square:
-					return true
+		print("  Checking at ", x + dir[0], " ", y + dir[1])
+		if (x + dir[0]) <= 7 and (y + dir[1]) <= 7 and \
+		(x + dir[0]) >= 0 and (y + dir[1]) >= 0 and \
+		global.state[x + dir[0]][y + dir[1]] == inv_color(global.current_player_color):
+			print("    Found enemy at ", x+dir[0], " ", y+dir[1])
+			# Check for empty square after enemy piece
+			if (x + dir[0]*2) <= 7 and (y + dir[1]*2) <= 7 and \
+			(x + dir[0]*2) >= 0 and (y + dir[1]*2) >= 0 and \
+			global.state[x+dir[0]*2][y+dir[1]*2] == "-":
+				print("      Found empty space at ", x+dir[0]*2, " ", y+dir[1]*2)
+				return true
 	return false
 
 
@@ -237,7 +245,6 @@ func capture_from_current_to(pos):
 		for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
 			if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
 				remove_piece(piece.get_name())
-	global.selected_piece_pos = Vector2(x_to, y_to)
 
 
 func remove_piece(name):
@@ -245,7 +252,7 @@ func remove_piece(name):
 	var x = board_nd.world_to_map(piece.get_pos()).x
 	var y = board_nd.world_to_map(piece.get_pos()).y
 	global.state[x][y] = "-"
-	piece.queue_free()
+	piece.free()
 
 
 func inv_color(color):
