@@ -264,11 +264,13 @@ func inv_color(color):
 
 func change_current_player():
 	global.current_player_color = inv_color(global.current_player_color)
-	label_nd.set_text("Current player: " + global.current_player_color)
+	if global.current_player_color == "b":
+		label_nd.set_text("Current player: black")
+	else:
+		label_nd.set_text("Current player: white")
 
 
 func print_board_state():
-	print("---STATUS---")
 	print("Current player: ", global.current_player_color)
 	print("Selected pos: ", global.selected_piece_pos)
 	print("Selected name: ", global.selected_piece_name)

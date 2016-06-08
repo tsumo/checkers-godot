@@ -95,7 +95,7 @@
 				<real> -40 </real>
 				<real> -469 </real>
 				<bool> True </bool>
-				<string> "label" </string>
+				<string> "Welcome! White pieces move first." </string>
 				<int> -1 </int>
 				<dictionary  shared="false">
 					<string> "_edit_lock_" </string>
