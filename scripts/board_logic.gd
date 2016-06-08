@@ -88,6 +88,7 @@ func init_white():
 		var sprite_nd = piece.get_node("sprite")
 		sprite_nd.set_texture(white_piece_txtr)
 		self.add_child(piece)
+		crown(piece)
 
 
 # Instance and position black pieces
@@ -219,9 +220,6 @@ func is_valid_capture_move(pos):
 			# Check for enemy piece
 			if global.state[x][y] == inv_color(global.current_player_color):
 				return true
-#			for piece in get_tree().get_nodes_in_group(inv_color(global.current_player_color)):
-#				if board_nd.world_to_map(piece.get_pos()) == Vector2(x, y):
-#					return true
 	return false
 
 
