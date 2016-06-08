@@ -119,7 +119,8 @@ func block_selection():
 
 func move_selected_to(pos):
 	var new_pos = board_nd.map_to_world(pos)
-	get_node(global.selected_piece_name).set_pos(new_pos)
+	var piece = get_node(global.selected_piece_name)
+	piece.set_pos(new_pos)
 	# Update global state
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
@@ -128,6 +129,11 @@ func move_selected_to(pos):
 	global.state[x_from][y_from] = "-"
 	global.state[x_to][y_to] = global.selected_piece_color
 	global.selected_piece_pos = Vector2(x_to, y_to)
+	# Crowning
+	if global.selected_piece_color == "w" and y_to == 0 or \
+	global.selected_piece_color == "b" and y_to == 7:
+		piece.get_node("crown").show()
+		piece.crowned = true
 
 
 func is_empty_square(pos):
