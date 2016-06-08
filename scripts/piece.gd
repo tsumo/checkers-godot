@@ -10,6 +10,7 @@ var selected = false
 var crowned = false
 
 onready var sprite_nd = get_node("sprite")
+onready var crown_nd = get_node("crown")
 onready var board_nd = get_node("../board")
 
 # Material gets duplicated to allow different shaders on
@@ -34,11 +35,13 @@ func _input_event(viewport, event, shape_idx):
 func _mouse_enter():
 	if global.current_player_color == color:
 		sprite_nd.set_scale(Vector2(1.1, 1.1))
+		crown_nd.set_scale(Vector2(1.1, 1.1))
 
 
 func _mouse_exit():
 	if global.current_player_color == color:
 		sprite_nd.set_scale(Vector2(1, 1))
+		crown_nd.set_scale(Vector2(1, 1))
 
 
 func _ready():

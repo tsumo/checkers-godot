@@ -8,7 +8,6 @@ var black_piece_txtr = preload("res://images/black_piece.png")
 var white_piece_txtr = preload("res://images/white_piece.png")
 
 var piece_scn = preload("res://scenes/piece.xml")
-var highlight_scn = preload("res://scenes/highlight.xml")
 
 
 func _input(event):
@@ -132,18 +131,14 @@ func move_selected_to(pos):
 
 
 func is_empty_square(pos):
-	var x = pos.x
-	var y = pos.y
-	if global.state[x][y] == "-":
+	if global.state[pos.x][pos.y] == "-":
 		return true
 	else:
 		return false
 
 
 func is_on_board(pos):
-	var x = pos.x
-	var y = pos.y
-	if (x >= 0 and x <= 7) and (y >= 0 and y <= 7):
+	if (pos.x >= 0 and pos.x <= 7) and (pos.y >= 0 and pos.y <= 7):
 		return true
 	else:
 		return false
