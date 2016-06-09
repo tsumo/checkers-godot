@@ -174,28 +174,47 @@ func has_capture_moves(pos):
 
 
 func is_valid_move(pos):
+	# Normal moves allowed only for non-blocked pieces
+	if global.selection_blocked == true:
+		return false
+	var piece = get_node(global.selected_piece_name)
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
 	var x_to = pos.x
 	var y_to = pos.y
-	# Normal moves allowed only for non-blocked pieces
-	if global.selection_blocked == false:
-		if global.current_player_color == "b":
-			# Allow diagonal moves down only
-			if y_to == y_from + 1 and \
-			(x_to == x_from - 1 or x_to == x_from + 1):
-				return true
-			else:
-				return false
-		else:
-			# Same for white pieces, only diagonal moves up
-			if y_to == y_from - 1 and \
-			(x_to == x_from - 1 or x_to == x_from + 1):
-				return true
-			else:
-				return false
-	else:
+	var x = x_from
+	var y = y_from
+	var diag
+	var result = true
+	# Check for non-diagonal move
+	if abs(x_from - x_to) != abs(y_from - y_to):
 		return false
+	if global.selected_piece_color == "b":
+		diag = [[1, 1], [-1, 1]]
+	else:
+		diag = [[1, -1], [-1, -1]]
+	# Checking appropriate diagonal direction for current piece
+	for dir in diag:
+		if piece.crowned:
+			# Go through all squares in between current pos
+			# and destination pos
+			while x != x_to:
+				if x < x_to:
+					x += 1
+				else:
+					x -= 1
+				if y < y_to:
+					y += 1
+				else:
+					y -= 1
+				# Non-empty square found on the path
+				if global.state[x][y] != "-":
+					result = false
+		else:
+			# Normal pieces can do only one diagonal step
+			if x_to != x_from + dir[0] and y_to != y_from + dir[1]:
+				result = false
+	return result
 
 
 func is_valid_capture_move(pos):
@@ -284,7 +303,7 @@ func print_board_state():
 		var state_line = ""
 		for j in range(8):
 			if j == global.selected_piece_pos.x and i == global.selected_piece_pos.y:
-				state_line += global.state[j][i].to_upper() + "\t"
+				state_line += "(" + global.state[j][i] + ")\t"
 			else:
 				state_line += global.state[j][i] + "\t"
 		print(state_line)
