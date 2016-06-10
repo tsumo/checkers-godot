@@ -88,7 +88,6 @@ func init_white():
 		var sprite_nd = piece.get_node("sprite")
 		sprite_nd.set_texture(white_piece_txtr)
 		self.add_child(piece)
-		crown(piece)
 
 
 # Instance and position black pieces
@@ -151,25 +150,45 @@ func is_on_board(pos):
 
 
 func has_capture_moves(pos):
-	print("Checking for moves at ", pos)
+	var piece = get_node(global.selected_piece_name)
 	var x = pos.x
 	var y = pos.y
+	var i = x
+	var j = y
 	var diag = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+	var enemy_piece_found = false
+	
 	# Check every diagonal direction
 	for dir in diag:
-		print("  Checking dir ", dir)
-		# Check for enemy piece nearby
-		print("  Checking at ", x + dir[0], " ", y + dir[1])
-		if (x + dir[0]) <= 7 and (y + dir[1]) <= 7 and \
-		(x + dir[0]) >= 0 and (y + dir[1]) >= 0 and \
-		global.state[x + dir[0]][y + dir[1]] == inv_color(global.current_player_color):
-			print("    Found enemy at ", x+dir[0], " ", y+dir[1])
-			# Check for empty square after enemy piece
-			if (x + dir[0]*2) <= 7 and (y + dir[1]*2) <= 7 and \
-			(x + dir[0]*2) >= 0 and (y + dir[1]*2) >= 0 and \
-			global.state[x+dir[0]*2][y+dir[1]*2] == "-":
-				print("      Found empty space at ", x+dir[0]*2, " ", y+dir[1]*2)
-				return true
+		if piece.crowned:
+			while (i >= 0 and i <= 7) and \
+			(j >= 0 and j <= 7):
+				i += dir[0]
+				j += dir[1]
+				# Same color piece blocks the path
+				if global.state[i][j] == global.current_player_color:
+					return false
+				# Enemy piece on the path
+				if global.state[i][j] == inv_color(global.current_player_color):
+					# Can't move through multiple pieces at once
+					if enemy_piece_found == true:
+						return false
+					else:
+						enemy_piece_found = true
+				# Empty square found after the enemy piece
+				if global.state[i][j] == "-":
+					if enemy_piece_found:
+						return true
+		else:
+			# Check for enemy piece nearby
+			if (x + dir[0]) <= 7 and (y + dir[1]) <= 7 and \
+			(x + dir[0]) >= 0 and (y + dir[1]) >= 0 and \
+			global.state[x + dir[0]][y + dir[1]] == inv_color(global.current_player_color):
+				# Check for empty square after enemy piece
+				if (x + dir[0]*2) <= 7 and (y + dir[1]*2) <= 7 and \
+				(x + dir[0]*2) >= 0 and (y + dir[1]*2) >= 0 and \
+				global.state[x+dir[0]*2][y+dir[1]*2] == "-":
+					return true
 	return false
 
 
@@ -177,6 +196,7 @@ func is_valid_move(pos):
 	# Normal moves allowed only for non-blocked pieces
 	if global.selection_blocked == true:
 		return false
+	
 	var piece = get_node(global.selected_piece_name)
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y
@@ -186,48 +206,20 @@ func is_valid_move(pos):
 	var y = y_from
 	var diag
 	var result = true
+	
 	# Check for non-diagonal move
 	if abs(x_from - x_to) != abs(y_from - y_to):
 		return false
+	
 	if global.selected_piece_color == "b":
 		diag = [[1, 1], [-1, 1]]
 	else:
 		diag = [[1, -1], [-1, -1]]
-	# Checking appropriate diagonal direction for current piece
-	for dir in diag:
-		if piece.crowned:
-			# Go through all squares in between current pos
-			# and destination pos
-			while x != x_to:
-				if x < x_to:
-					x += 1
-				else:
-					x -= 1
-				if y < y_to:
-					y += 1
-				else:
-					y -= 1
-				# Non-empty square found on the path
-				if global.state[x][y] != "-":
-					result = false
-		else:
-			# Normal pieces can do only one diagonal step
-			if x_to != x_from + dir[0] and y_to != y_from + dir[1]:
-				result = false
-	return result
-
-
-func is_valid_capture_move(pos):
-	var x_from = global.selected_piece_pos.x
-	var y_from = global.selected_piece_pos.y
-	var x_to = pos.x
-	var y_to = pos.y
-	var x = x_from
-	var y = y_from
-	if abs(x_from - x_to) == 2 and abs(y_from - y_to) == 2:
+	
+	if piece.crowned:
 		# Go through all squares in between current pos
 		# and destination pos
-		while(x != x_to):
+		while x != x_to:
 			if x < x_to:
 				x += 1
 			else:
@@ -236,10 +228,77 @@ func is_valid_capture_move(pos):
 				y += 1
 			else:
 				y -= 1
-			# Check for enemy piece
+			# Non-empty square found on the path
+			if global.state[x][y] != "-":
+				result = false
+	else:
+		# Checking appropriate diagonal direction for current piece
+		for dir in diag:
+			# Normal pieces can do only one diagonal step
+			if x_to != x_from + dir[0] and y_to != y_from + dir[1]:
+				result = false
+	
+	return result
+
+
+func is_valid_capture_move(pos):
+	var piece = get_node(global.selected_piece_name)
+	var x_from = global.selected_piece_pos.x
+	var y_from = global.selected_piece_pos.y
+	var x_to = pos.x
+	var y_to = pos.y
+	var x = x_from
+	var y = y_from
+	var enemy_piece_found = false
+	var result = false
+	
+	# Check for non-diagonal move
+	if abs(x_from - x_to) != abs(y_from - y_to):
+		return false
+	
+	if piece.crowned:
+		# Go through all squares in between current pos
+		# and destination pos
+		while x != x_to:
+			if x < x_to:
+				x += 1
+			else:
+				x -= 1
+			if y < y_to:
+				y += 1
+			else:
+				y -= 1
+			# Same color piece blocks the path
+			if global.state[x][y] == global.current_player_color:
+				return false
+			# Enemy piece on the path
 			if global.state[x][y] == inv_color(global.current_player_color):
-				return true
-	return false
+				# Can't move through multiple pieces at once
+				if enemy_piece_found == true:
+					return false
+				else:
+					enemy_piece_found = true
+			# Empty square found after the enemy piece
+			if global.state[x][y] == "-":
+				if enemy_piece_found:
+					result = true
+	else:
+		if abs(x_from - x_to) == 2 and abs(y_from - y_to) == 2:
+			# Go through all squares in between current pos
+			# and destination pos
+			while(x != x_to):
+				if x < x_to:
+					x += 1
+				else:
+					x -= 1
+				if y < y_to:
+					y += 1
+				else:
+					y -= 1
+				# Check for enemy piece
+				if global.state[x][y] == inv_color(global.current_player_color):
+					return true
+	return result
 
 
 func capture_from_current_to(pos):
