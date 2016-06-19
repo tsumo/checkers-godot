@@ -34,7 +34,7 @@ func _input(event):
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
 		
-		var pos = board_nd.world_to_map(event.pos)
+		var pos = board_nd.world_to_map(event.pos - get_node("../root").get_pos())
 		
 		if global.selected_piece_name != "None" \
 		and is_on_board(pos) \
@@ -104,6 +104,7 @@ func init_black():
 		var sprite_nd = piece.get_node("sprite")
 		sprite_nd.set_texture(black_piece_txtr)
 		self.add_child(piece)
+		crown(piece)
 
 
 func deselect_piece():
@@ -153,31 +154,40 @@ func has_capture_moves(pos):
 	var piece = get_node(global.selected_piece_name)
 	var x = pos.x
 	var y = pos.y
-	var i = x
-	var j = y
+	var i
+	var j
 	var diag = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
-	var enemy_piece_found = false
+	var enemy_piece_found
+	var multiple_pieces_found
 	
+	print("---")
+	print("NEW CHECK")
 	# Check every diagonal direction
 	for dir in diag:
+		i = x
+		j = y
+		print("Check dir: ", dir)
 		if piece.crowned:
-			while (i >= 0 and i <= 7) and \
-			(j >= 0 and j <= 7):
+			enemy_piece_found = false
+			multiple_pieces_found = false
+			while (i + dir[0] >= 0 and i + dir[0] <= 7) and \
+			(j + dir[1] >= 0 and j + dir[1] <= 7):
 				i += dir[0]
 				j += dir[1]
-				# Same color piece blocks the path
-				if global.state[i][j] == global.current_player_color:
-					return false
+				print("  Check at: ", i, " ", j)
 				# Enemy piece on the path
 				if global.state[i][j] == inv_color(global.current_player_color):
+					print("    Enemy at ", i, " ", j)
 					# Can't move through multiple pieces at once
-					if enemy_piece_found == true:
-						return false
+					if enemy_piece_found:
+						print("      Multiple enemy pieces at ", i, " ", j, " ABORT")
+						multiple_pieces_found = true
 					else:
 						enemy_piece_found = true
 				# Empty square found after the enemy piece
 				if global.state[i][j] == "-":
-					if enemy_piece_found:
+					if enemy_piece_found and not multiple_pieces_found:
+						print("Empty square at ", i, " ", j, " SUCCESS")
 						return true
 		else:
 			# Check for enemy piece nearby
@@ -189,6 +199,7 @@ func has_capture_moves(pos):
 				(x + dir[0]*2) >= 0 and (y + dir[1]*2) >= 0 and \
 				global.state[x+dir[0]*2][y+dir[1]*2] == "-":
 					return true
+	print("NO MOVES")
 	return false
 
 
@@ -274,7 +285,7 @@ func is_valid_capture_move(pos):
 			# Enemy piece on the path
 			if global.state[x][y] == inv_color(global.current_player_color):
 				# Can't move through multiple pieces at once
-				if enemy_piece_found == true:
+				if enemy_piece_found:
 					return false
 				else:
 					enemy_piece_found = true

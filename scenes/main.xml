@@ -18,8 +18,9 @@
 			<array  len="0" shared="false">
 			</array>
 			<string> "names" </string>
-			<string_array  len="47">
+			<string_array  len="57">
 				<string> "root" </string>
+				<string> "transform/pos" </string>
 				<string> "script/script" </string>
 				<string> "__meta__" </string>
 				<string> "Node2D" </string>
@@ -42,7 +43,6 @@
 				<string> "TileMap" </string>
 				<string> "CollisionShape2D" </string>
 				<string> "visibility/visible" </string>
-				<string> "transform/pos" </string>
 				<string> "shape" </string>
 				<string> "trigger" </string>
 				<string> "_update_shape_index" </string>
@@ -66,16 +66,27 @@
 				<string> "lines_skipped" </string>
 				<string> "max_lines_visible" </string>
 				<string> "Label" </string>
+				<string> "numbers_horiz" </string>
+				<string> "0" </string>
+				<string> "1" </string>
+				<string> "2" </string>
+				<string> "3" </string>
+				<string> "4" </string>
+				<string> "5" </string>
+				<string> "6" </string>
+				<string> "7" </string>
+				<string> "numbers_vert" </string>
 			</string_array>
 			<string> "node_count" </string>
-			<int> 5 </int>
+			<int> 23 </int>
 			<string> "node_paths" </string>
 			<array  len="0" shared="false">
 			</array>
 			<string> "nodes" </string>
-			<int_array  len="121"> 				-1, -1, 3, 0, -1, 2, 1, 0, 2, 1, 0, 0, 0, 20, 4, -1, 16, 5, 2, 6, 3, 7, 4, 8, 5, 9, 6, 10, 7, 11, 2, 12, 8, 13, 8, 14, 9, 15, 10, 16, 11, 17, 11, 18, 11, 19, 12, 2, 13, 0, 0, 0, 21, 21, -1, 6, 22, 8, 23, 14, 24, 15, 25, 8, 26, 16, 2, 17, 0, 0, 0, 31, 27, -1, 5, 23, 18, 28, 19, 29, 20, 30, 8, 2, 21, 0, 0, 0, 46, 32, -1, 14, 33, 11, 34, 11, 35, 22, 36, 23, 37, 24, 38, 25, 39, 26, 40, 26, 41, 7, 42, 27, 43, 9, 44, 2, 45, 16, 2, 28, 0 </int_array>
+			<int_array  len="605"> 				-1, -1, 4, 0, -1, 3, 1, 0, 2, 1, 3, 2, 0, 0, 0, 21, 5, -1, 16, 6, 3, 7, 4, 8, 5, 9, 6, 10, 7, 11, 8, 12, 3, 13, 9, 14, 9, 15, 10, 16, 11, 17, 12, 18, 12, 19, 12, 20, 13, 3, 14, 0, 0, 0, 22, 22, -1, 6, 23, 9, 1, 15, 24, 16, 25, 9, 26, 17, 3, 18, 0, 0, 0, 31, 27, -1, 5, 1, 19, 28, 20, 29, 21, 30, 9, 3, 22, 0, 0, 0, 46, 32, -1, 14, 33, 12, 34, 12, 35, 23, 36, 24, 37, 25, 38, 26, 39, 27, 40, 27, 41, 8, 42, 28, 43, 10, 44, 3, 45, 17, 3, 29, 0, 0, 0, 4, 47, -1, 1, 3, 30, 0, 5, 0, 46, 48, -1, 11, 35, 31, 36, 32, 37, 33, 38, 34, 39, 27, 40, 27, 41, 8, 42, 35, 43, 10, 44, 3, 45, 17, 0, 5, 0, 46, 49, -1, 11, 35, 36, 36, 32, 37, 37, 38, 34, 39, 27, 40, 27, 41, 8, 42, 38, 43, 10, 44, 3, 45, 17, 0, 5, 0, 46, 50, -1, 11, 35, 39, 36, 32, 37, 40, 38, 34, 39, 27, 40, 27, 41, 8, 42, 41, 43, 10, 44, 3, 45, 17, 0, 5, 0, 46, 51, -1, 11, 35, 42, 36, 32, 37, 43, 38, 34, 39, 27, 40, 27, 41, 8, 42, 44, 43, 10, 44, 3, 45, 17, 0, 5, 0, 46, 52, -1, 11, 35, 45, 36, 32, 37, 46, 38, 34, 39, 27, 40, 27, 41, 8, 42, 47, 43, 10, 44, 3, 45, 17, 0, 5, 0, 46, 53, -1, 11, 35, 48, 36, 32, 37, 49, 38, 34, 39, 27, 40, 27, 41, 8, 42, 50, 43, 10, 44, 3, 45, 17, 0, 5, 0, 46, 54, -1, 11, 35, 51, 36, 32, 37, 52, 38, 34, 39, 27, 40, 27, 41, 8, 42, 53, 43, 10, 44, 3, 45, 17, 0, 5, 0, 46, 55, -1, 11, 35, 54, 36, 32, 37, 55, 38, 34, 39, 27, 40, 27, 41, 8, 42, 56, 43, 10, 44, 3, 45, 17, 0, 0, 0, 4, 56, -1, 1, 3, 57, 0, 14, 0, 46, 48, -1, 11, 35, 58, 36, 59, 37, 60, 38, 23, 39, 27, 40, 27, 41, 8, 42, 35, 43, 10, 44, 3, 45, 17, 0, 14, 0, 46, 49, -1, 11, 35, 58, 36, 61, 37, 60, 38, 62, 39, 27, 40, 27, 41, 8, 42, 38, 43, 10, 44, 3, 45, 17, 0, 14, 0, 46, 50, -1, 11, 35, 58, 36, 63, 37, 60, 38, 64, 39, 27, 40, 27, 41, 8, 42, 41, 43, 10, 44, 3, 45, 17, 0, 14, 0, 46, 51, -1, 11, 35, 58, 36, 65, 37, 60, 38, 66, 39, 27, 40, 27, 41, 8, 42, 44, 43, 10, 44, 3, 45, 17, 0, 14, 0, 46, 52, -1, 11, 35, 58, 36, 67, 37, 60, 38, 68, 39, 27, 40, 27, 41, 8, 42, 47, 43, 10, 44, 3, 45, 17, 0, 14, 0, 46, 53, -1, 11, 35, 58, 36, 69, 37, 60, 38, 70, 39, 27, 40, 27, 41, 8, 42, 50, 43, 10, 44, 3, 45, 17, 0, 14, 0, 46, 54, -1, 11, 35, 58, 36, 71, 37, 60, 38, 72, 39, 27, 40, 27, 41, 8, 42, 53, 43, 10, 44, 3, 45, 17, 0, 14, 0, 46, 55, -1, 11, 35, 58, 36, 73, 37, 60, 38, 74, 39, 27, 40, 27, 41, 8, 42, 56, 43, 10, 44, 3, 45, 17, 0 </int_array>
 			<string> "variants" </string>
-			<array  len="29" shared="false">
+			<array  len="75" shared="false">
+				<vector2> 20, 20 </vector2>
 				<resource  external="0">  </resource>
 				<dictionary  shared="false">
 					<string> "_edit_lock_" </string>
@@ -120,6 +131,61 @@
 					<string> "_edit_lock_" </string>
 					<bool> True </bool>
 				</dictionary>
+				<dictionary  shared="false">
+					<string> "_edit_lock_" </string>
+					<bool> True </bool>
+					<string> "_editor_collapsed" </string>
+					<bool> True </bool>
+				</dictionary>
+				<real> 30 </real>
+				<real> -15 </real>
+				<real> 70 </real>
+				<real> -2 </real>
+				<string> "0" </string>
+				<real> 94 </real>
+				<real> 134 </real>
+				<string> "1" </string>
+				<real> 158 </real>
+				<real> 198 </real>
+				<string> "2" </string>
+				<real> 222 </real>
+				<real> 262 </real>
+				<string> "3" </string>
+				<real> 286 </real>
+				<real> 326 </real>
+				<string> "4" </string>
+				<real> 350 </real>
+				<real> 390 </real>
+				<string> "5" </string>
+				<real> 414 </real>
+				<real> 454 </real>
+				<string> "6" </string>
+				<real> 478 </real>
+				<real> 518 </real>
+				<string> "7" </string>
+				<dictionary  shared="false">
+					<string> "_edit_lock_" </string>
+					<bool> True </bool>
+					<string> "_editor_collapsed" </string>
+					<bool> True </bool>
+				</dictionary>
+				<real> -12 </real>
+				<real> 26 </real>
+				<real> 28 </real>
+				<real> 90 </real>
+				<real> 103 </real>
+				<real> 154 </real>
+				<real> 167 </real>
+				<real> 218 </real>
+				<real> 231 </real>
+				<real> 282 </real>
+				<real> 295 </real>
+				<real> 346 </real>
+				<real> 359 </real>
+				<real> 410 </real>
+				<real> 423 </real>
+				<real> 474 </real>
+				<real> 487 </real>
 			</array>
 			<string> "version" </string>
 			<int> 2 </int>
