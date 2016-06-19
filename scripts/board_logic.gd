@@ -157,6 +157,7 @@ func has_capture_moves(pos):
 	var j
 	var diag = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
 	var enemy_piece_found
+	var friendly_piece_found
 	var multiple_pieces_found
 	
 	print("---")
@@ -168,12 +169,16 @@ func has_capture_moves(pos):
 		print("Check dir: ", dir)
 		if piece.crowned:
 			enemy_piece_found = false
+			friendly_piece_found = false
 			multiple_pieces_found = false
 			while (i + dir[0] >= 0 and i + dir[0] <= 7) and \
 			(j + dir[1] >= 0 and j + dir[1] <= 7):
 				i += dir[0]
 				j += dir[1]
 				print("  Check at: ", i, " ", j)
+				# Same color piece found on the path
+				if global.state[i][j] == global.current_player_color:
+					friendly_piece_found = true
 				# Enemy piece on the path
 				if global.state[i][j] == inv_color(global.current_player_color):
 					print("    Enemy at ", i, " ", j)
@@ -185,7 +190,9 @@ func has_capture_moves(pos):
 						enemy_piece_found = true
 				# Empty square found after the enemy piece
 				if global.state[i][j] == "-":
-					if enemy_piece_found and not multiple_pieces_found:
+					if enemy_piece_found and \
+					not multiple_pieces_found and \
+					not friendly_piece_found:
 						print("Empty square at ", i, " ", j, " SUCCESS")
 						return true
 		else:
