@@ -104,7 +104,6 @@ func init_black():
 		var sprite_nd = piece.get_node("sprite")
 		sprite_nd.set_texture(black_piece_txtr)
 		self.add_child(piece)
-		crown(piece)
 
 
 func deselect_piece():
