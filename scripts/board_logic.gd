@@ -149,6 +149,42 @@ func is_on_board(pos):
 		return false
 
 
+func has_normal_moves(pos):
+	var piece = get_node(global.selected_piece_name)
+	var x = pos.x
+	var y = pos.y
+	var i
+	var j
+	var diag
+	
+	if piece.crowned:
+		diag = [[1, 1], [1, -1], [-1, 1], [-1, -1]]
+		for dir in diag:
+			i = x
+			j = y
+			while (i + dir[0] >= 0 and i + dir[0] <= 7) and \
+			(j + dir[1] >= 0 and j + dir[1] <= 7):
+				i += dir[0]
+				j += dir[1]
+				if global.state[i][j] == "-":
+					# Empty square found, piece has available moves
+					return true
+				else:
+					# Other piece blocks the path
+					return false
+	else:
+		if global.selected_piece_color == "b":
+			diag = [[1, 1], [-1, 1]]
+		else:
+			diag = [[1, -1], [-1, -1]]
+		for dir in diag:
+			if (x + dir[0]) <= 7 and (y + dir[1]) <= 7 and \
+			(x + dir[0]) >= 0 and (y + dir[1]) >= 0:
+				if global.state[x + dir[0]][y + dir[1]] == "-":
+					return true
+	return false
+
+
 func has_capture_moves(pos):
 	var piece = get_node(global.selected_piece_name)
 	var x = pos.x
@@ -160,13 +196,10 @@ func has_capture_moves(pos):
 	var friendly_piece_found
 	var multiple_pieces_found
 	
-	print("---")
-	print("NEW CHECK")
 	# Check every diagonal direction
 	for dir in diag:
 		i = x
 		j = y
-		print("Check dir: ", dir)
 		if piece.crowned:
 			enemy_piece_found = false
 			friendly_piece_found = false
@@ -175,16 +208,13 @@ func has_capture_moves(pos):
 			(j + dir[1] >= 0 and j + dir[1] <= 7):
 				i += dir[0]
 				j += dir[1]
-				print("  Check at: ", i, " ", j)
 				# Same color piece found on the path
 				if global.state[i][j] == global.current_player_color:
 					friendly_piece_found = true
 				# Enemy piece on the path
 				if global.state[i][j] == inv_color(global.current_player_color):
-					print("    Enemy at ", i, " ", j)
 					# Can't move through multiple pieces at once
 					if enemy_piece_found:
-						print("      Multiple enemy pieces at ", i, " ", j, " ABORT")
 						multiple_pieces_found = true
 					else:
 						enemy_piece_found = true
@@ -193,7 +223,6 @@ func has_capture_moves(pos):
 					if enemy_piece_found and \
 					not multiple_pieces_found and \
 					not friendly_piece_found:
-						print("Empty square at ", i, " ", j, " SUCCESS")
 						return true
 		else:
 			# Check for enemy piece nearby
@@ -205,7 +234,6 @@ func has_capture_moves(pos):
 				(x + dir[0]*2) >= 0 and (y + dir[1]*2) >= 0 and \
 				global.state[x+dir[0]*2][y+dir[1]*2] == "-":
 					return true
-	print("NO MOVES")
 	return false
 
 
@@ -375,6 +403,9 @@ func print_board_state():
 	print("Selected pos: ", global.selected_piece_pos)
 	print("Selected name: ", global.selected_piece_name)
 	print("Selection blocked: ", global.selection_blocked)
+	if global.selected_piece_name != "None":
+		print("Has normal moves: ", has_normal_moves(global.selected_piece_pos))
+		print("Has capture moves: ", has_capture_moves(global.selected_piece_pos))
 	for i in range(8):
 		var state_line = ""
 		for j in range(8):
