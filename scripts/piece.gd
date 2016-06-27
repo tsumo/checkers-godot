@@ -25,11 +25,17 @@ func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
-		if global.current_player_color == color \
-		and global.selection_blocked == false:
-			global.selected_piece_name = self.get_name()
-			global.selected_piece_pos = board_nd.world_to_map(pos)
-			global.selected_piece_color = color
+		if global.current_player_color == color and \
+		global.selection_blocked == false:
+			select()
+
+
+
+func select():
+	# self is used to allow this function to be called from other scripts
+	global.selected_piece_name = self.get_name()
+	global.selected_piece_pos = board_nd.world_to_map(self.pos)
+	global.selected_piece_color = self.color
 
 
 func _mouse_enter():

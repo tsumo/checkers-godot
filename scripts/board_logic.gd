@@ -242,6 +242,10 @@ func is_valid_move(pos):
 	if global.selection_blocked == true:
 		return false
 	
+	# Normal moves not allowed when capture moves are available
+	if has_capture_moves(global.selected_piece_pos):
+		return false
+	
 	var piece = get_node(global.selected_piece_name)
 	var x_from = global.selected_piece_pos.x
 	var y_from = global.selected_piece_pos.y

@@ -9,6 +9,10 @@ const positive_infinity = 3.402823e+38
 const negative_infinity = -2.802597e-45
 var max_depth = 3
 
+var all_pieces = get_tree().get_nodes_in_group("pieces_grp")
+var black_pieces = get_tree().get_nodes_in_group("b")
+var white_pieces = get_tree().get_nodes_in_group("w")
+
 
 func _ready():
 	pass
@@ -34,8 +38,19 @@ func eval_pos_static(board):
 
 
 func generate_move_list(board):
-	pass
+	var moves = {}
+	for piece in all_pieces:
+		moves[piece.get_name()] = []
+		if piece.has_normal_moves():
+			pass
 
 
 func make_move(board, move):
 	pass
+
+
+func get_piece_node_by_pos(pos):
+	for piece in get_tree().get_nodes_in_group("pieces_grp"):
+		if board_nd.world_to_map(piece.pos) == pos:
+			return piece
+	return false
