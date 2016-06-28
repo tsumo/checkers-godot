@@ -37,6 +37,12 @@ func eval_pos_static(board):
 	pass
 
 
+# Move list is stored in a dictionary with piece node name
+# as keys and a list of moves as values
+# [piece1 (move1, move2)
+#  piece2 (move1, move2, move3)]
+# Moves a stored as a list
+# move = (from, to, capture_flag)
 func generate_move_list(board):
 	var moves = {}
 	for piece in all_pieces:

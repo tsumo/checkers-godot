@@ -46,7 +46,7 @@ func _input(event):
 			elif is_valid_capture_move(pos):
 				capture_from_current_to(pos)
 				move_selected_to(pos)
-				if has_capture_moves(pos):
+				if has_capture_moves(get_node(global.selected_piece_name)):
 					block_selection()
 				else:
 					change_current_player()
@@ -147,8 +147,8 @@ func is_on_board(pos):
 		return false
 
 
-func has_normal_moves(pos):
-	var piece = get_node(global.selected_piece_name)
+func has_normal_moves(piece):
+	var pos = board_nd.world_to_map(piece.get_pos())
 	var x = pos.x
 	var y = pos.y
 	var i
@@ -183,8 +183,8 @@ func has_normal_moves(pos):
 	return false
 
 
-func has_capture_moves(pos):
-	var piece = get_node(global.selected_piece_name)
+func has_capture_moves(piece):
+	var pos = board_nd.world_to_map(piece.get_pos())
 	var x = pos.x
 	var y = pos.y
 	var i
@@ -241,7 +241,7 @@ func is_valid_move(pos):
 		return false
 	
 	# Normal moves not allowed when capture moves are available
-	if has_capture_moves(global.selected_piece_pos):
+	if has_capture_moves(get_node(global.selected_piece_name)):
 		return false
 	
 	var piece = get_node(global.selected_piece_name)
@@ -415,8 +415,8 @@ func print_board_state():
 	print("Selected name: ", global.selected_piece_name)
 	print("Selection blocked: ", global.selection_blocked)
 	if global.selected_piece_name != "None":
-		print("Has normal moves: ", has_normal_moves(global.selected_piece_pos))
-		print("Has capture moves: ", has_capture_moves(global.selected_piece_pos))
+		print("Has normal moves: ", has_normal_moves(get_node(global.selected_piece_name)))
+		print("Has capture moves: ", has_capture_moves(get_node(global.selected_piece_name)))
 	for i in range(8):
 		var state_line = ""
 		for j in range(8):
