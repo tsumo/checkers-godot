@@ -56,8 +56,6 @@ func _input(event):
 
 
 func _ready():
-	randomize()
-	
 	set_process(true)
 	set_process_input(true)
 	
@@ -130,8 +128,8 @@ func move_selected_to(pos):
 	global.state[x_to][y_to] = global.selected_piece_color
 	global.selected_piece_pos = Vector2(x_to, y_to)
 	# Crowning
-	if global.selected_piece_color == "w" and y_to == 0 or \
-	global.selected_piece_color == "b" and y_to == 7:
+	if global.selected_piece_color.to_lower() == "w" and y_to == 0 or \
+	global.selected_piece_color.to_lower() == "b" and y_to == 7:
 		crown(piece)
 
 
@@ -173,7 +171,7 @@ func has_normal_moves(pos):
 					# Other piece blocks the path
 					return false
 	else:
-		if global.selected_piece_color == "b":
+		if global.selected_piece_color.to_lower() == "b":
 			diag = [[1, 1], [-1, 1]]
 		else:
 			diag = [[1, -1], [-1, -1]]
@@ -209,10 +207,10 @@ func has_capture_moves(pos):
 				i += dir[0]
 				j += dir[1]
 				# Same color piece found on the path
-				if global.state[i][j] == global.current_player_color:
+				if global.state[i][j].to_lower() == global.current_player_color:
 					friendly_piece_found = true
 				# Enemy piece on the path
-				if global.state[i][j] == inv_color(global.current_player_color):
+				if global.state[i][j].to_lower() == inv_color(global.current_player_color):
 					# Can't move through multiple pieces at once
 					if enemy_piece_found:
 						multiple_pieces_found = true
@@ -228,7 +226,7 @@ func has_capture_moves(pos):
 			# Check for enemy piece nearby
 			if (x + dir[0]) <= 7 and (y + dir[1]) <= 7 and \
 			(x + dir[0]) >= 0 and (y + dir[1]) >= 0 and \
-			global.state[x + dir[0]][y + dir[1]] == inv_color(global.current_player_color):
+			global.state[x + dir[0]][y + dir[1]].to_lower() == inv_color(global.current_player_color):
 				# Check for empty square after enemy piece
 				if (x + dir[0]*2) <= 7 and (y + dir[1]*2) <= 7 and \
 				(x + dir[0]*2) >= 0 and (y + dir[1]*2) >= 0 and \
@@ -260,7 +258,7 @@ func is_valid_move(pos):
 	if abs(x_from - x_to) != abs(y_from - y_to):
 		return false
 	
-	if global.selected_piece_color == "b":
+	if global.selected_piece_color.to_lower() == "b":
 		diag = [[1, 1], [-1, 1]]
 	else:
 		diag = [[1, -1], [-1, -1]]
@@ -318,10 +316,10 @@ func is_valid_capture_move(pos):
 			else:
 				y -= 1
 			# Same color piece blocks the path
-			if global.state[x][y] == global.current_player_color:
+			if global.state[x][y].to_lower() == global.current_player_color:
 				return false
 			# Enemy piece on the path
-			if global.state[x][y] == inv_color(global.current_player_color):
+			if global.state[x][y].to_lower() == inv_color(global.current_player_color):
 				# Can't move through multiple pieces at once
 				if enemy_piece_found:
 					return false
@@ -345,7 +343,7 @@ func is_valid_capture_move(pos):
 				else:
 					y -= 1
 				# Check for enemy piece
-				if global.state[x][y] == inv_color(global.current_player_color):
+				if global.state[x][y].to_lower() == inv_color(global.current_player_color):
 					return true
 	return result
 
@@ -377,6 +375,11 @@ func capture_from_current_to(pos):
 func crown(piece):
 	piece.get_node("crown").show()
 	piece.crowned = true
+	var pos = board_nd.world_to_map(piece.get_pos())
+	var x = pos.x
+	var y = pos.y
+	global.state[x][y] = global.state[x][y].to_upper()
+	piece.color = piece.color.to_upper()
 
 
 func remove_piece(name):
@@ -390,8 +393,12 @@ func remove_piece(name):
 func inv_color(color):
 	if color == "b":
 		return "w"
-	else:
+	elif color == "w":
 		return "b"
+	elif color == "B":
+		return "W"
+	elif color == "W":
+		return "B"
 
 
 func change_current_player():

@@ -25,7 +25,7 @@ func _input_event(viewport, event, shape_idx):
 	if event.type == InputEvent.MOUSE_BUTTON \
 	and event.button_index == BUTTON_LEFT \
 	and event.pressed:
-		if global.current_player_color == color and \
+		if global.current_player_color == color.to_lower() and \
 		global.selection_blocked == false:
 			select()
 
@@ -39,13 +39,13 @@ func select():
 
 
 func _mouse_enter():
-	if global.current_player_color == color:
+	if global.current_player_color == color.to_lower():
 		sprite_nd.set_scale(Vector2(1.1, 1.1))
 		crown_nd.set_scale(Vector2(1.1, 1.1))
 
 
 func _mouse_exit():
-	if global.current_player_color == color:
+	if global.current_player_color == color.to_lower():
 		sprite_nd.set_scale(Vector2(1, 1))
 		crown_nd.set_scale(Vector2(1, 1))
 

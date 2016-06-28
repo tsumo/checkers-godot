@@ -6,8 +6,10 @@ extends Node
 
 var selected_piece_name = "None"
 var selected_piece_pos = Vector2(-1, -1)
+# May be uppercase for kings
 var selected_piece_color = "None"
 
+# Should always be lowercase
 var current_player_color = "w"
 
 # For multikill moves
