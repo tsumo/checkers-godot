@@ -46,7 +46,7 @@ func _input(event):
 			elif is_valid_capture_move(pos):
 				capture_from_current_to(pos)
 				move_selected_to(pos)
-				if has_capture_moves(get_node(global.selected_piece_name)):
+				if has_capture_moves(global.selected_piece_name):
 					block_selection()
 				else:
 					change_current_player()
@@ -147,7 +147,8 @@ func is_on_board(pos):
 		return false
 
 
-func has_normal_moves(piece):
+func has_normal_moves(piece_name):
+	var piece = get_node(piece_name)
 	var pos = board_nd.world_to_map(piece.get_pos())
 	var x = pos.x
 	var y = pos.y
@@ -183,7 +184,8 @@ func has_normal_moves(piece):
 	return false
 
 
-func has_capture_moves(piece):
+func has_capture_moves(piece_name):
+	var piece = get_node(piece_name)
 	var pos = board_nd.world_to_map(piece.get_pos())
 	var x = pos.x
 	var y = pos.y
@@ -226,7 +228,8 @@ func has_capture_moves(piece):
 			# Check for enemy piece nearby
 			if (x + dir[0]) <= 7 and (y + dir[1]) <= 7 and \
 			(x + dir[0]) >= 0 and (y + dir[1]) >= 0 and \
-			global.state[x + dir[0]][y + dir[1]].to_lower() == inv_color(global.current_player_color):
+			global.state[x + dir[0]][y + dir[1]].to_lower() == \
+			inv_color(global.current_player_color):
 				# Check for empty square after enemy piece
 				if (x + dir[0]*2) <= 7 and (y + dir[1]*2) <= 7 and \
 				(x + dir[0]*2) >= 0 and (y + dir[1]*2) >= 0 and \
@@ -241,7 +244,7 @@ func is_valid_move(pos):
 		return false
 	
 	# Normal moves not allowed when capture moves are available
-	if has_capture_moves(get_node(global.selected_piece_name)):
+	if has_capture_moves(global.selected_piece_name):
 		return false
 	
 	var piece = get_node(global.selected_piece_name)
@@ -415,8 +418,8 @@ func print_board_state():
 	print("Selected name: ", global.selected_piece_name)
 	print("Selection blocked: ", global.selection_blocked)
 	if global.selected_piece_name != "None":
-		print("Has normal moves: ", has_normal_moves(get_node(global.selected_piece_name)))
-		print("Has capture moves: ", has_capture_moves(get_node(global.selected_piece_name)))
+		print("Has normal moves: ", has_normal_moves(global.selected_piece_name))
+		print("Has capture moves: ", has_capture_moves(global.selected_piece_name))
 	for i in range(8):
 		var state_line = ""
 		for j in range(8):
